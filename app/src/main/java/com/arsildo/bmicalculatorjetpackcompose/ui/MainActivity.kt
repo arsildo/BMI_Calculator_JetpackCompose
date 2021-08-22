@@ -1,107 +1,120 @@
 package com.arsildo.bmicalculatorjetpackcompose.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arsildo.bmicalculatorjetpackcompose.ui.theme.Green
-import com.arsildo.bmicalculatorjetpackcompose.ui.theme.White
 
 
 @Composable
 fun MainActivityScreen(){
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black),
+            .fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
         Column (
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
-            HeightInput()
-            WeightInput()
+            CalculateBMI()
         }
     }
 }
 
 @Composable
-fun HeightInput() {
-    var text by remember { mutableStateOf("") }
-    Row (
-        modifier = Modifier.padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+fun CalculateBMI() {
+    
+    var height by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+    
+    Column(
+        Modifier.padding(horizontal = 16.dp,vertical = 32.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = CenterHorizontally
     ) {
-        OutlinedTextField(
-            value = text,
-            maxLines = 1,
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Green,
-                unfocusedIndicatorColor = Green,
-                focusedIndicatorColor = White,
-            ),
-            onValueChange = { text = it },
-            label = {
-                Text(
-                    text = "Height",
-                    color = Green,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = "CM",
-            color = Green,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
+        Box(
+            Modifier.padding(vertical = 16.dp).fillMaxWidth(),
+            contentAlignment = Center
+        ) {
+            Text(
+                text = "Calculate BMI",
+                color = Green,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Medium,
+            )
+        }
+        
+        Row (
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
+        ){
+            TextField(
+                value = height,
+                onValueChange = { height = it },
+                label = { Text("Height") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = Green
+                ),
+            )
+            Text(text = "cm",Modifier.padding(horizontal = 8.dp))
+        }
 
-@Composable
-fun WeightInput() {
-    var text by remember { mutableStateOf("") }
-    Row (
-        modifier = Modifier.padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        OutlinedTextField(
-            value = text,
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Green,
-                unfocusedIndicatorColor = Green,
-                focusedIndicatorColor = White,
-            ),
-            maxLines = 1,
-            onValueChange = { text = it },
-            label = {
-                Text(
-                    text = "Weight",
-                    color = Green,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
+        Row (
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
+        ){
+            TextField(
+                value = weight,
+                onValueChange = { weight = it },
+                label = { Text("Weight") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = Green
                 )
-            }
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = "KG",
-            color = Green,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Medium
-        )
+            )
+            Text(text = "kg",Modifier.padding(horizontal = 8.dp))
+        }
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp,vertical = 64.dp)
+                .size(256.dp),
+            contentAlignment = Center
+        ){
+            Text(
+                text = "18.5",
+                fontSize = 64.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Medium,
+            )
+            CircularProgressIndicator(
+                progress = .95f,
+                strokeWidth = 16.dp,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+
     }
+
+
 }
