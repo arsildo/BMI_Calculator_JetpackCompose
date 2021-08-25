@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arsildo.bmicalculatorjetpackcompose.ui.theme.*
 import kotlin.math.pow
-import kotlin.math.roundToLong
 
 
 @Composable
@@ -55,13 +54,13 @@ fun CalculateBMI() {
     }
 
     Column(
-        Modifier.padding(horizontal = 16.dp, vertical = 32.dp),
+        Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = CenterHorizontally
     ) {
         Box(
             Modifier
-                .padding(vertical = 16.dp)
+                .padding(vertical = 4.dp)
                 .fillMaxWidth(),
             contentAlignment = Center
         ) {
@@ -72,7 +71,12 @@ fun CalculateBMI() {
                 fontWeight = FontWeight.Medium,
             )
         }
-
+        Text(
+            text = "EU Metrics",
+            color = White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+        )
         Row(
             Modifier
                 .fillMaxWidth()
@@ -82,7 +86,38 @@ fun CalculateBMI() {
         ) {
             TextField(
                 value = height,
-                onValueChange = { height = it },
+                onValueChange = {
+                    height = it
+                    if ( height.isEmpty() || weight.isEmpty() ) {
+                        Toast.makeText(
+                            context,
+                            "Make sure to fill out your height.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        classification = ""
+                        calculation = 0f
+                        progress = 0f
+                    } else {
+                        calculation = computeBMI(height, weight)
+                        if (calculation < 18.5) {
+                            classification = "Underweight"
+                            progress = .1f
+                            classificationColor = Blue
+                        } else if (calculation >= 18.5 && calculation < 24.9) {
+                            classification = "Healthy"
+                            progress = .5f
+                            classificationColor = Green
+                        } else if (calculation >= 24.9 && calculation < 30) {
+                            classification = "Overweight"
+                            progress = .75f
+                            classificationColor = DarkRed
+                        } else if (calculation >= 30) {
+                            classification = "Suffering from Obesity"
+                            progress = 1f
+                            classificationColor = Red
+                        }
+                    }
+                                },
                 label = { Text("Height", color = White) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 colors = TextFieldDefaults.textFieldColors(
@@ -109,16 +144,17 @@ fun CalculateBMI() {
                 value = weight,
                 onValueChange = {
                     weight = it
-                    if ( height.isEmpty() && weight.isEmpty() ) {
+                    if ( height.isEmpty() || weight.isEmpty() ) {
                         Toast.makeText(
                             context,
-                            "Please fill out all information fields.",
+                            "Make sure to fill out your weight.",
                             Toast.LENGTH_SHORT
                         ).show()
+                        classification = ""
+                        calculation = 0f
+                        progress = 0f
                     } else {
-                        val w = weight.toFloat()
-                        val h = height.toFloat()/100
-                        calculation = (w/h.pow(2))
+                        calculation = computeBMI(height, weight)
                         if (calculation < 18.5) {
                             classification = "Underweight"
                             progress = .1f
@@ -152,10 +188,20 @@ fun CalculateBMI() {
                 color = White,
             )
         }
+
+        Box(Modifier.padding(vertical = 16.dp),contentAlignment = Center) {
+            Text(
+                text = classification,
+                color = classificationColor,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+
         Box(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 64.dp)
-                .size(256.dp),
+                .size(250.dp),
             contentAlignment = Center
         ) {
             Text(
@@ -173,13 +219,13 @@ fun CalculateBMI() {
             )
         }
 
-        Box(contentAlignment = Center) {
-            Text(
-                text = classification,
-                color = classificationColor,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Medium
-            )
-        }
     }
+}
+
+fun computeBMI(height : String, weight : String) : Float {
+    val calculation: Float
+    val w = weight.toFloat()
+    val h = height.toFloat()/100
+    calculation = (w/h.pow(2))
+    return calculation
 }
