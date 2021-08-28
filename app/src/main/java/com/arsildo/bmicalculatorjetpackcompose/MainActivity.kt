@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BMICalculatorJetpackComposeTheme {
+                // CALLED THE COMPOSABLE HERE ALL RELATED LOGIC IS IN THIS FILE
                 MainActivityScreen()
             }
         }

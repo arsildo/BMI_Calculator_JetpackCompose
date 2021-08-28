@@ -24,25 +24,24 @@ import com.arsildo.bmicalculatorjetpackcompose.ui.theme.*
 import kotlin.math.pow
 
 
+// MAIN AND ONLY SCREEN CHECK OUT RELATED COMMENTS
+
 @Composable
 fun MainActivityScreen(){
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize() // Fill whole screen
             .background(Black),
         contentAlignment = Alignment.TopCenter
     ) {
-        Column (
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = CenterHorizontally
-        ) {
-            CalculateBMI()
-        }
+        // Call the Composable Function
+        CalculateBMI()
     }
 }
 
 @Composable
 fun CalculateBMI() {
+    // Marked all the changing parts of the app with mutable states
     val context = LocalContext.current
     var height by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
@@ -85,8 +84,10 @@ fun CalculateBMI() {
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
+                // Logic if either weight or height value is changed
                 value = height,
                 onValueChange = {
+                    // Check and compute
                     height = it
                     if ( height.isEmpty() || weight.isEmpty() ) {
                         Toast.makeText(
@@ -198,6 +199,7 @@ fun CalculateBMI() {
             )
         }
 
+        // Circular Progress bar with text in the center Custom Box
         Box(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 64.dp)
@@ -205,7 +207,7 @@ fun CalculateBMI() {
             contentAlignment = Center
         ) {
             Text(
-                text = String.format("%.2f", calculation),
+                text = String.format("%.2f", calculation), // Format Result
                 color = White,
                 fontSize = 64.sp,
                 textAlign = TextAlign.Center,
@@ -222,7 +224,9 @@ fun CalculateBMI() {
     }
 }
 
+// BMI Computation Logic
 fun computeBMI(height : String, weight : String) : Float {
+    // EU METRICS FORMULA
     val calculation: Float
     val w = weight.toFloat()
     val h = height.toFloat()/100
