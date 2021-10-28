@@ -21,13 +21,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arsildo.bmicalculatorjetpackcompose.ui.theme.*
-import kotlin.math.pow
 
 
 // MAIN AND ONLY SCREEN CHECK OUT RELATED COMMENTS
 
 @Composable
-fun MainActivityScreen(){
+fun MainActivityScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize() // Fill whole screen
@@ -48,7 +47,7 @@ fun CalculateBMI() {
     var classification by remember { mutableStateOf("") }
     var calculation by remember { mutableStateOf(0.0f) }
     var progress by remember { mutableStateOf(0.0f) }
-    var classificationColor  by remember {
+    var classificationColor by remember {
         mutableStateOf(Color.White)
     }
 
@@ -76,121 +75,84 @@ fun CalculateBMI() {
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
         )
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            TextField(
-                // Logic if either weight or height value is changed
-                value = height,
-                onValueChange = {
-                    // Check and compute
-                    height = it
-                    if ( height.isEmpty() || weight.isEmpty() ) {
-                        Toast.makeText(
-                            context,
-                            "Make sure to fill out your height.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        classification = ""
-                        calculation = 0f
-                        progress = 0f
-                    } else {
-                        calculation = computeBMI(height, weight)
-                        if (calculation < 18.5) {
-                            classification = "Underweight"
-                            progress = .1f
-                            classificationColor = Blue
-                        } else if (calculation >= 18.5 && calculation < 24.9) {
-                            classification = "Healthy"
-                            progress = .5f
-                            classificationColor = Green
-                        } else if (calculation >= 24.9 && calculation < 30) {
-                            classification = "Overweight"
-                            progress = .75f
-                            classificationColor = DarkRed
-                        } else if (calculation >= 30) {
-                            classification = "Suffering from Obesity"
-                            progress = 1f
-                            classificationColor = Red
-                        }
-                    }
-                                },
-                label = { Text("Height", color = White) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = Green,
-                    unfocusedIndicatorColor = Color.White,
-                    textColor = Green
-                ),
-            )
-            Text(
-                text = "cm",
-                Modifier.padding(horizontal = 8.dp),
-                color = White
-            )
-        }
 
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            TextField(
-                value = weight,
-                onValueChange = {
-                    weight = it
-                    if ( height.isEmpty() || weight.isEmpty() ) {
-                        Toast.makeText(
-                            context,
-                            "Make sure to fill out your weight.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        classification = ""
-                        calculation = 0f
-                        progress = 0f
-                    } else {
-                        calculation = computeBMI(height, weight)
-                        if (calculation < 18.5) {
-                            classification = "Underweight"
-                            progress = .1f
-                            classificationColor = Blue
-                        } else if (calculation >= 18.5 && calculation < 24.9) {
-                            classification = "Healthy"
-                            progress = .5f
-                            classificationColor = Green
-                        } else if (calculation >= 24.9 && calculation < 30) {
-                            classification = "Overweight"
-                            progress = .75f
-                            classificationColor = DarkRed
-                        } else if (calculation >= 30) {
-                            classification = "Suffering from Obesity"
-                            progress = 1f
-                            classificationColor = Red
-                        }
+        TextFieldComponent(
+            inputValue = height,
+            metric = "cm",
+            label = "Height",
+            onValueChange = {
+                height = it
+                if (height.isEmpty() || weight.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "Make sure to fill out everything!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    classification = ""
+                    calculation = 0f
+                    progress = 0f
+                } else {
+                    calculation = computeBMI(height, weight)
+                    if (calculation < 18.5) {
+                        classification = "Underweight"
+                        progress= .1f
+                        classificationColor = Blue
+                    } else if (calculation >= 18.5 && calculation < 24.9) {
+                        classification = "Healthy"
+                        progress = .5f
+                        classificationColor = Green
+                    } else if (calculation >= 24.9 && calculation < 30) {
+                        classification = "Overweight"
+                        progress = .75f
+                        classificationColor = DarkRed
+                    } else if (calculation >= 30) {
+                        classification = "Suffering from Obesity"
+                        progress = 1f
+                        classificationColor = Red
                     }
-                },
-                label = { Text("Weight", color = White) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = Green,
-                    unfocusedIndicatorColor = Color.White,
-                    textColor = Green
-                )
-            )
-            Text(
-                text = "kg",
-                Modifier.padding(horizontal = 8.dp),
-                color = White,
-            )
-        }
+                }
 
-        Box(Modifier.padding(vertical = 16.dp),contentAlignment = Center) {
+            }
+        )
+        TextFieldComponent(
+            inputValue = weight,
+            metric = "kg",
+            label = "Weight",
+            onValueChange = {
+                weight = it
+                if (height.isEmpty() || weight.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "Make sure to fill out everything!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    classification = ""
+                    calculation = 0f
+                    progress = 0f
+                } else {
+                    calculation = computeBMI(height, weight)
+                    if (calculation < 18.5) {
+                        classification = "Underweight"
+                        progress= .1f
+                        classificationColor = Blue
+                    } else if (calculation >= 18.5 && calculation < 24.9) {
+                        classification = "Healthy"
+                        progress = .5f
+                        classificationColor = Green
+                    } else if (calculation >= 24.9 && calculation < 30) {
+                        classification = "Overweight"
+                        progress = .75f
+                        classificationColor = DarkRed
+                    } else if (calculation >= 30) {
+                        classification = "Suffering from Obesity"
+                        progress = 1f
+                        classificationColor = Red
+                    }
+                }
+            }
+        )
+
+        Box(Modifier.padding(vertical = 16.dp), contentAlignment = Center) {
             Text(
                 text = classification,
                 color = classificationColor,
@@ -224,12 +186,3 @@ fun CalculateBMI() {
     }
 }
 
-// BMI Computation Logic
-fun computeBMI(height : String, weight : String) : Float {
-    // EU METRICS FORMULA
-    val calculation: Float
-    val w = weight.toFloat()
-    val h = height.toFloat()/100
-    calculation = (w/h.pow(2))
-    return calculation
-}
