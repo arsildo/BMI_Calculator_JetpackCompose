@@ -1,47 +1,24 @@
 package com.arsildo.bmicalculatorjetpackcompose.ui
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arsildo.bmicalculatorjetpackcompose.ui.theme.*
 
-
-// MAIN AND ONLY SCREEN CHECK OUT RELATED COMMENTS
-
 @Composable
-fun MainActivityScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize() // Fill whole screen
-            .background(Black),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        // Call the Composable Function
-        CalculateBMI()
-    }
-}
-
-@Composable
-fun CalculateBMI() {
+fun Body() {
     // Marked all the changing parts of the app with mutable states
-    val context = LocalContext.current
     var height by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
     var classification by remember { mutableStateOf("") }
@@ -52,30 +29,25 @@ fun CalculateBMI() {
     }
 
     Column(
-        Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+        Modifier
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = CenterHorizontally
     ) {
-        Box(
-            Modifier
-                .padding(vertical = 4.dp)
-                .fillMaxWidth(),
-            contentAlignment = Center
-        ) {
-            Text(
-                text = "Calculate BMI",
-                color = Green,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Medium,
-            )
-        }
+        Text(
+            text = "Calculate BMI",
+            color = Green,
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Medium,
+        )
         Text(
             text = "EU Metrics",
             color = White,
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
         )
-
+        // Custom TextField Component
         TextFieldComponent(
             inputValue = height,
             metric = "cm",
@@ -83,11 +55,6 @@ fun CalculateBMI() {
             onValueChange = {
                 height = it
                 if (height.isEmpty() || weight.isEmpty()) {
-                    Toast.makeText(
-                        context,
-                        "Make sure to fill out everything!",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     classification = ""
                     calculation = 0f
                     progress = 0f
@@ -95,7 +62,7 @@ fun CalculateBMI() {
                     calculation = computeBMI(height, weight)
                     if (calculation < 18.5) {
                         classification = "Underweight"
-                        progress= .1f
+                        progress = .1f
                         classificationColor = Blue
                     } else if (calculation >= 18.5 && calculation < 24.9) {
                         classification = "Healthy"
@@ -111,7 +78,6 @@ fun CalculateBMI() {
                         classificationColor = Red
                     }
                 }
-
             }
         )
         TextFieldComponent(
@@ -121,11 +87,6 @@ fun CalculateBMI() {
             onValueChange = {
                 weight = it
                 if (height.isEmpty() || weight.isEmpty()) {
-                    Toast.makeText(
-                        context,
-                        "Make sure to fill out everything!",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     classification = ""
                     calculation = 0f
                     progress = 0f
@@ -133,7 +94,7 @@ fun CalculateBMI() {
                     calculation = computeBMI(height, weight)
                     if (calculation < 18.5) {
                         classification = "Underweight"
-                        progress= .1f
+                        progress = .1f
                         classificationColor = Blue
                     } else if (calculation >= 18.5 && calculation < 24.9) {
                         classification = "Healthy"
@@ -185,4 +146,3 @@ fun CalculateBMI() {
 
     }
 }
-
