@@ -1,6 +1,5 @@
 package com.arsildo.bmicalculatorjetpackcompose.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -9,7 +8,6 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,23 +58,10 @@ fun Body() {
                     progress = 0f
                 } else {
                     calculation = computeBMI(height, weight)
-                    if (calculation < 18.5) {
-                        classification = "Underweight"
-                        progress = .1f
-                        classificationColor = Blue
-                    } else if (calculation >= 18.5 && calculation < 24.9) {
-                        classification = "Healthy"
-                        progress = .5f
-                        classificationColor = Green
-                    } else if (calculation >= 24.9 && calculation < 30) {
-                        classification = "Overweight"
-                        progress = .75f
-                        classificationColor = DarkRed
-                    } else if (calculation >= 30) {
-                        classification = "Suffering from Obesity"
-                        progress = 1f
-                        classificationColor = Red
-                    }
+                    calculation = computeBMI(height, weight)
+                    classification = classifyBMI(calculation)
+                    progress = getProgress(calculation)
+                    classificationColor = getClassificationColor(calculation)
                 }
             }
         )
@@ -92,23 +77,9 @@ fun Body() {
                     progress = 0f
                 } else {
                     calculation = computeBMI(height, weight)
-                    if (calculation < 18.5) {
-                        classification = "Underweight"
-                        progress = .1f
-                        classificationColor = Blue
-                    } else if (calculation >= 18.5 && calculation < 24.9) {
-                        classification = "Healthy"
-                        progress = .5f
-                        classificationColor = Green
-                    } else if (calculation >= 24.9 && calculation < 30) {
-                        classification = "Overweight"
-                        progress = .75f
-                        classificationColor = DarkRed
-                    } else if (calculation >= 30) {
-                        classification = "Suffering from Obesity"
-                        progress = 1f
-                        classificationColor = Red
-                    }
+                    classification = classifyBMI(calculation)
+                    progress = getProgress(calculation)
+                    classificationColor = getClassificationColor(calculation)
                 }
             }
         )
@@ -145,4 +116,53 @@ fun Body() {
         }
 
     }
+}
+
+// LOGIC FUNCTION TO CATEGORIZE WEIGHT COMPUTATION
+fun classifyBMI(
+    calculation: Float
+): String {
+    var classification = ""
+    if (calculation < 18.5) {
+        classification = "Underweight"
+    } else if (calculation >= 18.5 && calculation < 24.9) {
+        classification = "Healthy"
+    } else if (calculation >= 24.9 && calculation < 30) {
+        classification = "Overweight"
+    } else if (calculation >= 30) {
+        classification = "Suffering from Obesity"
+    }
+    return classification
+}
+
+fun getProgress(
+    calculation: Float
+): Float {
+    var progress = 0f
+    if (calculation < 18.5) {
+        progress = .1f
+    } else if (calculation >= 18.5 && calculation < 24.9) {
+        progress = .5f
+    } else if (calculation >= 24.9 && calculation < 30) {
+        progress = .75f
+    } else if (calculation >= 30) {
+        progress = 1f
+    }
+    return progress
+}
+
+fun getClassificationColor(
+    calculation: Float
+): Color {
+    var classificationColor = White
+    if (calculation < 18.5) {
+        classificationColor = Blue
+    } else if (calculation >= 18.5 && calculation < 24.9) {
+        classificationColor = Green
+    } else if (calculation >= 24.9 && calculation < 30) {
+        classificationColor = DarkRed
+    } else if (calculation >= 30) {
+        classificationColor = Red
+    }
+    return classificationColor
 }
