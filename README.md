@@ -1,6 +1,6 @@
 
 <div>
-<h2>BMI Calculator with Kotlin and Jetpack Compose</h2></br></br>
+<h3>BMI Calculator with Kotlin and Jetpack Compose</h3></br></br>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/51417052/130802494-8c77e65a-601b-4e0b-9c7f-9f16813bc560.png" width="150" height="150">
 <img src="https://user-images.githubusercontent.com/51417052/130803169-5913f0d0-d42d-4446-ab9d-cbe25e8e690f.png" width="150" height="150">
